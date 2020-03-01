@@ -125,7 +125,7 @@ prepended to the element after the #+HEADER: tag."
         org-log-done 'time
         org-catch-invisible-edits 'smart
         org-startup-indented t
-        org-ellipsis (if (char-displayable-p ?) "  " nil)
+        ;; org-ellipsis (if (char-displayable-p ?) "  " nil)
         org-pretty-entities nil
         org-hide-emphasis-markers t)
 
@@ -160,10 +160,12 @@ prepended to the element after the #+HEADER: tag."
   (use-package org-fancy-priorities
     :diminish
     :hook (org-mode . org-fancy-priorities-mode)
-    :init (setq org-fancy-priorities-list
-                (if (char-displayable-p ?⯀)
-                    '("⯀" "⯀" "⯀" "⯀")
-                  '("HIGH" "MEDIUM" "LOW" "OPTIONAL"))))
+    :init (setq org-fancy-priorities-list '("⚡" "⬆" "⬇" "☕")))
+  ;;   ;; (if (char-displayable-p ?■)
+  ;;   ;;     '("■" "■" "■" "■")
+  ;;   ;; (if (char-displayable-p ?⯀)
+  ;;   ;;     '("⯀" "⯀" "⯀" "⯀")
+  ;;   '("HIGH" "MEDIUM" "LOW" "OPTIONAL"))))
 
   ;; Babel
   (setq org-confirm-babel-evaluate nil

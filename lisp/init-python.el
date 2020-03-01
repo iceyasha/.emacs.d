@@ -50,7 +50,15 @@
   (with-eval-after-load 'exec-path-from-shell
     (exec-path-from-shell-copy-env "PYTHONPATH"))
   ;; Live Coding in Python
-  (use-package live-py-mode))
+  (use-package live-py-mode)
+
+  ;; Format using YAPF
+  ;; Install: pip install yapf
+  (use-package yapfify
+    :diminish yapf-mode
+    ;; :hook (python-mode . yapf-mode)
+    )
+  )
 
 (provide 'init-python)
 
