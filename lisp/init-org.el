@@ -104,6 +104,7 @@ prepended to the element after the #+HEADER: tag."
                        "Beautify org symbols."
                        (setq prettify-symbols-alist centaur-prettify-org-symbols-alist)
                        (prettify-symbols-mode 1)))
+         (org-mode . auto-fill-mode)
          (org-indent-mode . (lambda()
                               (diminish 'org-indent-mode)
                               ;; WORKAROUND: Prevent text moving around while using brackets
@@ -112,11 +113,12 @@ prepended to the element after the #+HEADER: tag."
                               (setq show-paren-mode nil))))
   :config
   ;; To speed up startup, don't put to init section
-  (setq org-agenda-files '("~/Dropbox/org")
+  (setq org-agenda-files '("~/Dropbox/org/inbox.org"
+                           "~/Dropbox/org/plan.org"
+                           "~/Dropbox/org/journal.org")
         org-todo-keywords
         '((sequence "TODO(t)" "DOING(i)" "HANGUP(h)" "|" "DONE(d)" "CANCEL(c)"))
-        org-todo-keyword-faces '(("HANGUP" . warning)
-                                 ("❓" . warning))
+        org-todo-keyword-faces '(("HANGUP" . warning))
         org-priority-faces '((?A . error)
                              (?B . warning)
                              (?C . success))
@@ -126,7 +128,23 @@ prepended to the element after the #+HEADER: tag."
         org-startup-indented t
         ;; org-ellipsis (if (char-displayable-p ?) "  " nil)
         org-pretty-entities nil
-        org-hide-emphasis-markers t)
+        org-hide-emphasis-markers t
+        ;; Org template config
+        org-capture-templates '(
+                                ("i" "inbox" entry (file+headline "~/Dropbox/org/inbox.org" "inbox")
+                                 "* TODO %U %i%?" :empty-lines 1)
+                                ("s" "task" entry (file+headline "~/Dropbox/org/task.org" "task")
+                                 "* TODO %U %i%?" :empty-lines 1)
+                                ("j" "Journal"
+                                 entry (file+datetree "~/Dropbox/org/journal.org")
+                                 "* %U - %^{heading} %^g\n %?\n"
+                                 )
+                                )
+        ;; Move entry
+        org-refile-targets '(
+                             ("~/Dropbox/org/someday.org" :level . 1)
+                             ("~/Dropbox/org/gtd.org" :maxlevel . 3)
+                             ))
 
   ;; Add new template
   (add-to-list 'org-structure-template-alist '("n" . "note"))
@@ -154,7 +172,8 @@ prepended to the element after the #+HEADER: tag."
   (use-package org-bullets
     :if (char-displayable-p ?⚫)
     :hook (org-mode . org-bullets-mode)
-    :init (setq org-bullets-bullet-list '("⚫" "⚫" "⚫" "⚫")))
+    :init (setq org-bullets-bullet-list '("⚫" "⚫" "⚫" "⚫"))
+    )
 
   (use-package org-fancy-priorities
     :diminish
